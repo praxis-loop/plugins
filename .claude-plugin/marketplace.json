@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "praxis-plugins",
+  "description": "Curated cross-platform plugins for Claude Code and Codex.",
+  "owner": {
+    "name": "Praxis Loop"
+  },
+  "plugins": [
+    {
+      "name": "ponytail",
+      "source": "./plugins/ponytail",
+      "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+      "category": "productivity",
+      "version": "4.9.0",
+      "author": {
+        "name": "Dietrich Gebert",
+        "url": "https://github.com/DietrichGebert"
+      },
+      "homepage": "https://github.com/DietrichGebert/ponytail",
+      "repository": "https://github.com/DietrichGebert/ponytail",
+      "license": "MIT"
+    }
+  ]
+}

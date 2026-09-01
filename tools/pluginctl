@@ -1,0 +1,247 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+const lib = require('./pluginctl-lib');
+
+const repoRoot = path.resolve(__dirname, '..');
+const sourcesFile = path.join(repoRoot, 'sources', 'plugins.sources.yaml');
+const lockFile = path.join(repoRoot, '.xan', 'plugins.lock.json');
+
+function usage() {
+  console.log(`Usage: tools/pluginctl <command> [args]
+
+Commands:
+  add github <repository> --target <target> [--path <path>] [--name <name>] [--ref <ref>] [--platforms claude,codex]
+  check [--offline]
+  update <plugin-name> [--dry-run]
+  update --all [--dry-run]
+  marketplaces
+  sync
+  doctor`);
+}
+
+function loadSources() {
+  return lib.loadYamlFile(sourcesFile, { version: 1, marketplace: {}, plugins: {} });
+}
+
+function loadLock() {
+  return lib.loadJsonFile(lockFile, { lockfileVersion: 1, plugins: {} });
+}
+
+function saveLock(lock) {
+  lib.writeJsonFile(lockFile, lock);
+}
+
+function option(args, name, fallback) {
+  const index = args.indexOf(name);
+  if (index === -1) return fallback;
+  if (index + 1 >= args.length) throw new Error(`Missing value for ${name}`);
+  return args[index + 1];
+}
+
+function addGithub(args) {
+  const repositoryArg = args[0];
+  if (!repositoryArg) throw new Error('Missing GitHub repository');
+  const target = option(args, '--target', null);
+  if (!target) throw new Error('Missing --target');
+  const name = option(args, '--name', path.basename(target));
+  const sourcePath = option(args, '--path', '.');
+  const ref = option(args, '--ref', 'main');
+  const platforms = option(args, '--platforms', 'claude,codex').split(',').map((item) => item.trim()).filter(Boolean);
+  const normalized = lib.normalizeGithubRepository(repositoryArg);
+  const sources = loadSources();
+  sources.version = 1;
+  sources.plugins = sources.plugins || {};
+  sources.plugins[name] = {
+    type: 'github',
+    repository: normalized.repository,
+    path: sourcePath,
+    track: { type: 'branch', value: ref },
+    target,
+    platforms,
+    category: 'Other',
+    policy: { installation: 'AVAILABLE', authentication: 'ON_INSTALL' }
+  };
+  lib.writeYamlFile(sourcesFile, sources);
+  console.log(`Added GitHub plugin source ${name} -> ${normalized.repository}:${sourcePath}`);
+}
+
+function check(args = []) {
+  const offline = args.includes('--offline');
+  const sources = loadSources();
+  const lock = loadLock();
+  const errors = lib.validateSources(sources);
+  const names = Object.keys(sources.plugins || {}).sort();
+  if (names.length === 0) console.log('No external plugin sources configured.');
+
+  for (const name of names) {
+    const source = sources.plugins[name];
+    const target = path.join(repoRoot, source.target);
+    const locked = lock.plugins && lock.plugins[name];
+    console.log(`\n${name}`);
+    console.log(`  source: ${source.type} ${source.repository}:${source.path}`);
+    console.log(`  target: ${source.target}`);
+    console.log(`  platforms: ${(source.platforms || []).join(', ')}`);
+
+    if (!offline) {
+      try {
+        const head = lib.resolveGithubHead(source);
+        if (locked && locked.resolved && locked.resolved.commit === head) console.log(`  upstream: OK ${head.slice(0, 12)}`);
+        else if (locked && locked.resolved) console.log(`  upstream: UPDATE ${locked.resolved.commit.slice(0, 12)} -> ${head.slice(0, 12)}`);
+        else console.log(`  upstream: UNLOCKED ${head.slice(0, 12)}`);
+      } catch (error) {
+        errors.push(`${name}: ${error.message}`);
+        console.log(`  upstream: ERROR ${error.message}`);
+      }
+    } else {
+      console.log('  upstream: skipped (offline)');
+    }
+
+    if (!fs.existsSync(target)) {
+      errors.push(`${name}: target missing`);
+      console.log('  integrity: MISSING');
+      continue;
+    }
+    const hash = lib.hashDirectory(target);
+    if (locked && locked.contentSha256 === hash) console.log(`  integrity: OK ${hash}`);
+    else {
+      errors.push(`${name}: target hash does not match lockfile`);
+      console.log(`  integrity: MISMATCH actual=${hash} locked=${locked ? locked.contentSha256 : 'none'}`);
+    }
+
+    const validation = lib.validatePlugin(target, name, source.platforms || []);
+    if (validation.errors.length) {
+      validation.errors.forEach((error) => errors.push(`${name}: ${error}`));
+      console.log(`  manifests: FAIL - ${validation.errors.join('; ')}`);
+    } else {
+      console.log('  manifests: OK');
+    }
+    const risk = lib.scanPluginRisk(target);
+    if (locked && JSON.stringify(locked.riskFlags || []) !== JSON.stringify(risk.flags)) {
+      errors.push(`${name}: risk flags do not match lockfile`);
+      console.log(`  risk lock: MISMATCH locked=${JSON.stringify(locked.riskFlags || [])}`);
+    }
+    if (risk.flags.length) console.log(`  risk: REVIEW REQUIRED - ${risk.flags.join('; ')}`);
+    else console.log('  risk: OK');
+  }
+
+  const generated = lib.validateMarketplaces(repoRoot, sources, lock);
+  generated.errors.forEach((error) => errors.push(error));
+  console.log(`\nMarketplaces: codex=${generated.codexCount} claude=${generated.claudeCount}`);
+  if (errors.length) {
+    console.log(`\nResult: FAIL (${errors.length} issue${errors.length === 1 ? '' : 's'})`);
+    process.exitCode = 1;
+  } else {
+    console.log('\nResult: OK');
+  }
+}
+
+function syncOne(name, source, options, lock) {
+  if (source.type !== 'github') throw new Error(`${name}: unsupported source type ${source.type}`);
+  const workDir = lib.makeTempWorkDir();
+  try {
+    const fetched = lib.cloneGithubSource(source, workDir);
+    const staged = path.join(workDir, 'staged');
+    lib.copyDir(fetched.sourcePath, staged);
+    const overlayFiles = lib.applyOverlay(staged, lib.loadOverlay(repoRoot, name));
+    const validation = lib.validatePlugin(staged, name, source.platforms || []);
+    if (validation.errors.length) throw new Error(`manifest validation failed: ${validation.errors.join('; ')}`);
+    const contentSha256 = lib.hashDirectory(staged);
+    const risk = lib.scanPluginRisk(staged);
+    const target = path.join(repoRoot, source.target);
+    const previous = lock.plugins[name];
+    const changed = !previous || previous.contentSha256 !== contentSha256 || previous.resolved.commit !== fetched.commit ||
+      JSON.stringify(previous.riskFlags || []) !== JSON.stringify(risk.flags) || !fs.existsSync(target);
+
+    console.log(`\n${name}`);
+    console.log(`  resolved: ${fetched.commit.slice(0, 12)} tree=${fetched.treeSha.slice(0, 12)}`);
+    console.log(`  content: ${contentSha256}`);
+    console.log(`  changed: ${changed ? 'yes' : 'no'}`);
+    if (overlayFiles.length) console.log(`  overlay: ${overlayFiles.join(', ')}`);
+    if (risk.flags.length) console.log(`  risk: REVIEW REQUIRED - ${risk.flags.join('; ')}`);
+    else console.log('  risk: OK');
+
+    if (!options.dryRun && changed) {
+      lib.removeDir(target);
+      lib.copyDir(staged, target);
+      const metadata = lib.pluginMetadata(staged, source.platforms || []);
+      lock.plugins[name] = {
+        sourceType: 'github',
+        repository: fetched.repository,
+        path: source.path,
+        requested: source.track,
+        resolved: { commit: fetched.commit, treeSha: fetched.treeSha },
+        target: source.target,
+        platforms: source.platforms,
+        version: metadata.version || null,
+        contentSha256,
+        syncedAt: new Date().toISOString(),
+        riskFlags: risk.flags
+      };
+    }
+    return changed;
+  } finally {
+    lib.removeDir(workDir);
+  }
+}
+
+function update(args) {
+  const dryRun = args.includes('--dry-run');
+  const all = args.includes('--all');
+  const targetName = all ? null : args.find((arg) => arg !== '--dry-run');
+  if (!all && !targetName) throw new Error('Missing plugin name or --all');
+  const sources = loadSources();
+  const sourceErrors = lib.validateSources(sources);
+  if (sourceErrors.length) throw new Error(sourceErrors.join('; '));
+  const lock = loadLock();
+  lock.lockfileVersion = 1;
+  lock.plugins = lock.plugins || {};
+  const names = all ? Object.keys(sources.plugins || {}).sort() : [targetName];
+  let changed = 0;
+  for (const name of names) {
+    if (!sources.plugins[name]) throw new Error(`Unknown external plugin source: ${name}`);
+    if (syncOne(name, sources.plugins[name], { dryRun }, lock)) changed += 1;
+  }
+  if (!dryRun) {
+    saveLock(lock);
+    lib.generateMarketplaces(repoRoot, sources, lock);
+  }
+  console.log(`\nUpdate result: ${changed} changed${dryRun ? ' (dry run)' : ''}`);
+}
+
+function marketplaces() {
+  const result = lib.generateMarketplaces(repoRoot, loadSources(), loadLock());
+  console.log(`Generated marketplaces: codex=${result.codexCount} claude=${result.claudeCount}`);
+}
+
+function doctor() {
+  const sources = loadSources();
+  console.log('Praxis Plugins Supply Chain Doctor');
+  console.log(`Repository: ${repoRoot}`);
+  console.log(`External sources: ${Object.keys(sources.plugins || {}).length}`);
+  check([]);
+}
+
+function main() {
+  const args = process.argv.slice(2);
+  const command = args.shift();
+  try {
+    if (!command || command === '--help' || command === '-h') return usage();
+    if (command === 'add') {
+      const type = args.shift();
+      if (type !== 'github') throw new Error('Only add github is supported');
+      return addGithub(args);
+    }
+    if (command === 'check') return check(args);
+    if (command === 'update') return update(args);
+    if (command === 'sync') return update(['--all']);
+    if (command === 'marketplaces') return marketplaces();
+    if (command === 'doctor') return doctor();
+    throw new Error(`Unknown command: ${command}`);
+  } catch (error) {
+    console.error(`ERROR: ${error.message}`);
+    process.exitCode = 1;
+  }
+}
+
+main();

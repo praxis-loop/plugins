@@ -1,0 +1,23 @@
+version: 1
+marketplace:
+  name: praxis-plugins
+  displayName: Praxis Plugins
+  description: Curated cross-platform plugins for Claude Code and Codex.
+  owner:
+    name: Praxis Loop
+plugins:
+  ponytail:
+    type: github
+    repository: DietrichGebert/ponytail
+    path: .
+    track:
+      type: branch
+      value: main
+    target: plugins/ponytail
+    platforms:
+      - claude
+      - codex
+    category: Productivity
+    policy:
+      installation: AVAILABLE
+      authentication: ON_INSTALL

@@ -1,0 +1,17 @@
+{
+  "name": "praxis-plugins",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Curated cross-platform AI agent plugin marketplace tooling",
+  "scripts": {
+    "test": "node test/pluginctl-lib.test.js",
+    "pluginctl": "node tools/pluginctl",
+    "update-summary": "node tools/render-update-summary"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

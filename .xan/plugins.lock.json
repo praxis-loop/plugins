@@ -1,0 +1,34 @@
+{
+  "lockfileVersion": 1,
+  "plugins": {
+    "ponytail": {
+      "sourceType": "github",
+      "repository": "DietrichGebert/ponytail",
+      "path": ".",
+      "requested": {
+        "type": "branch",
+        "value": "main"
+      },
+      "resolved": {
+        "commit": "2ed6c52c9d7e5e56942508591085fd45dea277d3",
+        "treeSha": "93c5eaa97ec448b74055f6478898324b65ddb7f9"
+      },
+      "target": "plugins/ponytail",
+      "platforms": [
+        "claude",
+        "codex"
+      ],
+      "version": "4.9.0",
+      "contentSha256": "sha256:f98f5d355faac96b5ca3ca05f2998bd245531ddb68fe7ab9c4677e36407b2c89",
+      "syncedAt": "2026-09-01T15:24:29.971Z",
+      "riskFlags": [
+        "contains MCP components",
+        "contains destructive delete command",
+        "contains executable helper scripts",
+        "contains lifecycle hooks",
+        "contains package install command",
+        "mentions secret-bearing paths or values"
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+const childProcess = require('child_process');
+const lib = require('./pluginctl-lib');
+
+const repoRoot = path.resolve(__dirname, '..');
+const lock = lib.loadJsonFile(path.join(repoRoot, '.xan', 'plugins.lock.json'), { plugins: {} });
+const output = childProcess.execFileSync('git', ['status', '--porcelain'], { cwd: repoRoot, encoding: 'utf8' });
+const files = lib.parseGitStatusPorcelain(output);
+const names = Object.keys(lock.plugins || {}).filter((name) => {
+  const target = lock.plugins[name].target;
+  return files.some((file) => file === target || file.startsWith(`${target}/`) || file === '.xan/plugins.lock.json');
+});
+
+console.log('## Plugin Update Summary\n');
+if (!names.length) console.log('- No external plugin lockfile changes were detected.');
+for (const name of names) {
+  const item = lock.plugins[name];
+  console.log(`- ${name}`);
+  console.log(`  - Source: ${item.repository}`);
+  console.log(`  - Commit: ${item.resolved.commit}`);
+  console.log(`  - Content SHA256: ${item.contentSha256}`);
+  console.log(`  - Platforms: ${(item.platforms || []).join(', ')}`);
+  console.log(`  - Security review: ${(item.riskFlags || []).length ? `required (${item.riskFlags.join('; ')})` : 'no high-risk flags detected'}`);
+}
+console.log('\n## Changed Files\n');
+if (!files.length) console.log('- None');
+else files.forEach((file) => console.log(`- ${file}`));
