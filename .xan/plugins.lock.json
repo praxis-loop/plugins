@@ -19,8 +19,8 @@
         "codex"
       ],
       "version": "4.9.0",
-      "contentSha256": "sha256:f98f5d355faac96b5ca3ca05f2998bd245531ddb68fe7ab9c4677e36407b2c89",
-      "syncedAt": "2026-09-01T15:24:29.971Z",
+      "contentSha256": "sha256:10b27be3786a9cd16b179dd20cd1a3f90aea5f7439f705d765911cd1b677ea09",
+      "syncedAt": "2026-09-02T08:02:08.895Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",
