@@ -8,8 +8,9 @@
 | 插件 | 上游 | Claude | Codex | 说明 |
 | --- | --- | :---: | :---: | --- |
 | Ponytail | `DietrichGebert/ponytail` | ✓ | ✓ | 把 AI 编程会话整理为可复用的轨迹、记忆和洞察 |
+| Sepia | `Nanako0129/sepia` | ✓ | ✓ | 去 AI 味写作：router 加 write / review / refactor / recreate 四个操作入口 |
 
-Ponytail 是第三方插件；`plugins/ponytail/` 是由 `pluginctl` 从上游生成的快照，
+两者都是第三方插件；`plugins/<name>/` 是由 `pluginctl` 从上游生成的快照，
 不要直接编辑。
 
 ## 目录约定
@@ -24,7 +25,7 @@ overlays/<name>/overlay.yaml       # 可重放的小型本地适配
 tools/pluginctl                    # 供应链工具
 ```
 
-两个 marketplace 指向同一个 `plugins/ponytail/`，因此不会为 Claude 和 Codex
+两个 marketplace 指向同一份 `plugins/<name>/` 快照，因此不会为 Claude 和 Codex
 维护两份容易漂移的副本。插件内部仍保留各自的
 `.claude-plugin/plugin.json` 和 `.codex-plugin/plugin.json`。
 
@@ -47,6 +48,7 @@ Windows 没有可用 Bash/WSL 时，等价运行
 # Claude Code
 claude plugin marketplace add /absolute/path/to/praxis-plugins
 claude plugin install ponytail@praxis-plugins
+claude plugin install sepia@praxis-plugins
 
 # Codex
 codex plugin marketplace add /absolute/path/to/praxis-plugins

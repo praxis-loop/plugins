@@ -1,0 +1,9 @@
+{
+  "name": "sepia",
+  "version": "0.5.0",
+  "description": "De-AI writing package with the general Sepia router plus four separate operation entries: write, review, refactor, and recreate.",
+  "skills": "./skills/",
+  "license": "MIT",
+  "repository": "https://github.com/Nanako0129/sepia",
+  "homepage": "https://github.com/Nanako0129/sepia"
+}

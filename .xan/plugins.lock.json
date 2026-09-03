@@ -29,6 +29,32 @@
         "contains package install command",
         "mentions secret-bearing paths or values"
       ]
+    },
+    "sepia": {
+      "sourceType": "github",
+      "repository": "Nanako0129/sepia",
+      "path": ".",
+      "requested": {
+        "type": "branch",
+        "value": "main"
+      },
+      "resolved": {
+        "commit": "f24eff3f6c69a9d700fa014dbbb1de6285d4c0e5",
+        "treeSha": "84d4648a46b503ee5d8b8dfcf707dbedb1f5ce35"
+      },
+      "target": "plugins/sepia",
+      "platforms": [
+        "claude",
+        "codex"
+      ],
+      "version": "0.5.0",
+      "contentSha256": "sha256:22de2acb84586a4190014f398725b00208cc814aa69ef748dba5b13d9e107a39",
+      "syncedAt": "2026-09-03T16:09:36.664Z",
+      "riskFlags": [
+        "contains executable helper scripts",
+        "contains network command",
+        "mentions secret-bearing paths or values"
+      ]
     }
   }
 }
