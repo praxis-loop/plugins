@@ -54,6 +54,10 @@ v0.4.0 起，sepia 定义了与语气／风格类 skill（极简主义方法、�
 
 接口约定摘要：sepia 的架构决策先行，语气技法选择性应用（每篇选择 3–5 种代表性技法，代表性结尾公式偶尔故意打破）。review 只报告语气／风格的已知代价、不直接修改，但一致性问题不因此减弱：语气风格不能免除节奏检查。在专业文档路由中，venue 仍决定语域，发生直接冲突时交由你决定。这个接口的依据是一次极简主义样本的盲审实验，属单一案例，不是量化证据。`references/voices/` 下附带一个内置 profile（海明威：小说用冰山式省略、专业文体用堪萨斯城星报规则，每一招都标注出处）。小说路线上，review 会在你的文本记录到的 findings 符合它时给出提示；你要求「强力去 AI 味」也视为 opt-in，sepia 会说明正在应用这个 profile 以及如何取消。`/sepia-hemingway` 是直接入口。
 
+## 句长节奏与中文校准
+
+style pass 会检查句长的**变化幅度**，这是有量测到它的研究中唯一方向一致的句法量测（人类文本在同一段内变化更大，英文与中文皆然）；句长平均值、标点计数、段落长度则明确列为非信号，因为量测方向互相矛盾。中文文本会加载 `references/languages/zh.md`，这份校准建立在唯一一个有量测的中文语料（HC3，2023）上，限制写在文件里；证据与数字见 `research/rhythm-syntax.md`。
+
 ## 安装
 
 下列命令均采用 **user scope**：安装一次，每个项目都能用。
@@ -145,7 +149,7 @@ sepia/
 ├── skills/
 │   ├── sepia/                # 标准 skill（Agent Skills standard）
 │   │   ├── SKILL.md          # routing、operations、calibration rules、guardrails
-│   │   └── references/       # passes、rubric、fingerprints、domain rules、voice-skills（实验性）
+│   │   └── references/       # passes、rubric、fingerprints、domain rules、languages/zh.md、voice-skills（实验性）
 │   ├── sepia-write/SKILL.md  # 固定单一操作的薄 wrapper
 │   ├── sepia-review/SKILL.md
 │   ├── sepia-refactor/SKILL.md
@@ -170,6 +174,12 @@ sepia/
 ## 参考资料
 
 完整摘要与链接见 [`research/`](research/)。主要来源：StoryScope ([arXiv:2604.03136](https://arxiv.org/abs/2604.03136)); LAMP ([CHI 2025](https://arxiv.org/abs/2409.14509)); Measuring AI Slop ([arXiv:2509.19163](https://arxiv.org/abs/2509.19163)); Reinhart et al. ([PNAS 2025](https://arxiv.org/abs/2410.16107)); Russell et al. ([ACL 2025](https://arxiv.org/abs/2501.15654)); NarraBench ([arXiv:2510.09869](https://arxiv.org/abs/2510.09869)); Echoes in AI ([PNAS 2025](https://arxiv.org/abs/2501.00273)); QUDsim ([COLM 2025](https://arxiv.org/abs/2504.09373)); Beguš ([2024](https://arxiv.org/abs/2310.12902)); Beyond Checkmate ([EMNLP 2025](https://arxiv.org/abs/2501.19301)); Nonaka & Perry ([2025](https://arxiv.org/abs/2510.18932)); Chakrabarty et al. ([2026](https://arxiv.org/abs/2510.13939)).
+
+## 赞助
+
+sepia 任何人都能免费用，也不需要注册账号。每条规则背后的研究全部公开。项目的实际开销只有维护时间与两种模型额度：委派研究 agent 读论文原文做文献调查，以及规则改动上线前用真实模型实测 A/B 对照小说和跨平台端到端审查。欢迎在 Patreon 上支持这个项目。
+
+[![Support sepia on Patreon](https://img.shields.io/badge/Support_on_Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/cw/Nanako0129/membership)
 
 ## 许可证
 

@@ -54,6 +54,10 @@ v0.4.0 起，sepia 定義了跟聲音／風格類 skill（極簡主義方法、�
 
 條約摘要：sepia 的架構決策先行，聲音技法選擇性套用（每篇挑 3–5 招招牌技法，招牌結尾公式偶爾故意打破）。review 只回報聲音的已知代價、不代修，但均勻性 finding 不打折：聲音不能豁免節拍器。專業路由上 venue 仍定語域，直接衝突交回給你決定。這個介面的依據是一次極簡規格樣本的盲審實驗，屬單一案例，不是量測證據。`references/voices/` 下附一個內建 profile（海明威：小說用冰山省略、專業文體用堪薩斯市星報規則，每一招都標出處）。小說路線上，review 會在你的文本記錄到的 findings 符合它時提示；你說要「強力去 AI 味」也算 opt-in，sepia 會講明正在套用這個 profile、以及怎麼取消。`/sepia-hemingway` 是直接入口。
 
+## 句長節奏與中文校準
+
+style pass 會檢查句長的**變化幅度**，這是有量測到它的研究唯一方向一致的句法量測（人類文本在同一段內變化較大，英文與中文皆然）；句長平均值、標點計數、段落長度則明列為非訊號，因為量測方向互相矛盾。中文文本會載入 `references/languages/zh.md`，這份校準建立在唯一一個有量測的中文語料（HC3，2023）上，限制寫在檔案裡；證據與數字見 `research/rhythm-syntax.md`。
+
 ## 安裝
 
 下列指令一律寫成 **user scope**：安裝一次，每個專案都能用。
@@ -145,7 +149,7 @@ sepia/
 ├── skills/
 │   ├── sepia/                # 正典 skill（Agent Skills standard）
 │   │   ├── SKILL.md          # routing、operations、calibration rules、guardrails
-│   │   └── references/       # passes、rubric、fingerprints、domain rules、voice-skills（實驗性）
+│   │   └── references/       # passes、rubric、fingerprints、domain rules、languages/zh.md、voice-skills（實驗性）
 │   ├── sepia-write/SKILL.md  # 固定單一操作的薄 wrapper
 │   ├── sepia-review/SKILL.md
 │   ├── sepia-refactor/SKILL.md
@@ -170,6 +174,12 @@ sepia/
 ## 資料來源
 
 完整摘要與連結見 [`research/`](research/)。主要來源：StoryScope ([arXiv:2604.03136](https://arxiv.org/abs/2604.03136)); LAMP ([CHI 2025](https://arxiv.org/abs/2409.14509)); Measuring AI Slop ([arXiv:2509.19163](https://arxiv.org/abs/2509.19163)); Reinhart et al. ([PNAS 2025](https://arxiv.org/abs/2410.16107)); Russell et al. ([ACL 2025](https://arxiv.org/abs/2501.15654)); NarraBench ([arXiv:2510.09869](https://arxiv.org/abs/2510.09869)); Echoes in AI ([PNAS 2025](https://arxiv.org/abs/2501.00273)); QUDsim ([COLM 2025](https://arxiv.org/abs/2504.09373)); Beguš ([2024](https://arxiv.org/abs/2310.12902)); Beyond Checkmate ([EMNLP 2025](https://arxiv.org/abs/2501.19301)); Nonaka & Perry ([2025](https://arxiv.org/abs/2510.18932)); Chakrabarty et al. ([2026](https://arxiv.org/abs/2510.13939)).
+
+## 贊助
+
+sepia 免費，不需要帳號。每條規則背後的研究也都是公開的。專案的實際開銷只有維護時間與兩種模型額度：委派研究 agent 讀論文原文做文獻調查，以及規則改動發布前用真實模型實測 A/B 對照小說與跨平台端到端審查。歡迎前往 Patreon 贊助支持。
+
+[![Support sepia on Patreon](https://img.shields.io/badge/Support_on_Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/cw/Nanako0129/membership)
 
 ## 授權
 
