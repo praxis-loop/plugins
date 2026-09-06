@@ -39,17 +39,17 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "55ba9cfe57e2a23489499a26050c9c90c9843c8f",
-        "treeSha": "fb979ee59bf113199857f1245d388a1fbacf01c9"
+        "commit": "d8a0f948cc46a0ba0d610df7458c4e8943bfe51a",
+        "treeSha": "ed9bcb74fd3c28d487bce24f1a93e1720c168775"
       },
       "target": "plugins/sepia",
       "platforms": [
         "claude",
         "codex"
       ],
-      "version": "0.7.0",
-      "contentSha256": "sha256:8e1fa9d23aa942a1796cc64cb05d9bb5007b1aa38ee4bfbd6c7658693dc1cfc8",
-      "syncedAt": "2026-09-05T07:46:40.695Z",
+      "version": "0.8.0",
+      "contentSha256": "sha256:1152fe63dac5e2ebf4c17f55fae17ee7870c5de5ec057ab23fefb3a534094cf2",
+      "syncedAt": "2026-09-06T08:01:22.069Z",
       "riskFlags": [
         "contains executable helper scripts",
         "contains network command",
