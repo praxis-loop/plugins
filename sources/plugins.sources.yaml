@@ -36,3 +36,18 @@ plugins:
     policy:
       installation: AVAILABLE
       authentication: ON_INSTALL
+  ecc:
+    type: github
+    repository: affaan-m/ECC
+    path: .
+    track:
+      type: branch
+      value: main
+    target: plugins/ecc
+    platforms:
+      - claude
+      - codex
+    category: Coding
+    policy:
+      installation: AVAILABLE
+      authentication: ON_INSTALL

@@ -9,8 +9,9 @@
 | --- | --- | :---: | :---: | --- |
 | Ponytail | `DietrichGebert/ponytail` | ✓ | ✓ | 把 AI 编程会话整理为可复用的轨迹、记忆和洞察 |
 | Sepia | `Nanako0129/sepia` | ✓ | ✓ | 去 AI 味写作：router 加 write / review / refactor / recreate 四个操作入口 |
+| ECC | `affaan-m/ECC` | ✓ | ✓ | agent harness 优化系统：agents、skills、命令、hooks、规则与 MCP 约定 |
 
-两者都是第三方插件；`plugins/<name>/` 是由 `pluginctl` 从上游生成的快照，
+三者都是第三方插件；`plugins/<name>/` 是由 `pluginctl` 从上游生成的快照，
 不要直接编辑。
 
 ## 目录约定
@@ -49,6 +50,7 @@ Windows 没有可用 Bash/WSL 时，等价运行
 claude plugin marketplace add /absolute/path/to/praxis-plugins
 claude plugin install ponytail@praxis-plugins
 claude plugin install sepia@praxis-plugins
+claude plugin install ecc@praxis-plugins
 
 # Codex
 codex plugin marketplace add /absolute/path/to/praxis-plugins

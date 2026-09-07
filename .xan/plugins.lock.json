@@ -55,6 +55,37 @@
         "contains network command",
         "mentions secret-bearing paths or values"
       ]
+    },
+    "ecc": {
+      "sourceType": "github",
+      "repository": "affaan-m/ECC",
+      "path": ".",
+      "requested": {
+        "type": "branch",
+        "value": "main"
+      },
+      "resolved": {
+        "commit": "e04ea0b9cc8248686edf5ac751cadff550e162b8",
+        "treeSha": "60a004be3290dbd0dffe54fae55437c21af35a1d"
+      },
+      "target": "plugins/ecc",
+      "platforms": [
+        "claude",
+        "codex"
+      ],
+      "version": "2.2.1",
+      "contentSha256": "sha256:eec49893274b59182efc35977477c1fdee3f74b1be3e4edbb9578b3475105e5b",
+      "syncedAt": "2026-09-07T09:22:57.888Z",
+      "riskFlags": [
+        "contains MCP components",
+        "contains destructive delete command",
+        "contains executable helper scripts",
+        "contains lifecycle hooks",
+        "contains network command",
+        "contains package install command",
+        "contains sudo command",
+        "mentions secret-bearing paths or values"
+      ]
     }
   }
 }
