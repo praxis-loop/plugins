@@ -10,8 +10,8 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "974d940a1c5344210874150b98ff0d2c861fab6a",
-        "treeSha": "0b015d72fc6e05f82849797d0fe9461ebc1de680"
+        "commit": "356918eba965ee1eac64bd3a7f0dd02108350de5",
+        "treeSha": "3bb4226d87085db53fbf6a0013f6b5de07fcf815"
       },
       "target": "plugins/ponytail",
       "platforms": [
@@ -19,8 +19,8 @@
         "codex"
       ],
       "version": "4.9.0",
-      "contentSha256": "sha256:7081c0d48a674c607466562f5804b1cfc0964d2750f4ea97d3defd27a73d6b4d",
-      "syncedAt": "2026-09-05T07:46:40.156Z",
+      "contentSha256": "sha256:35a184cb77e379ed2d191c3c856d03c8cf1611ca51f0744c2e8975c868bf4178",
+      "syncedAt": "2026-09-08T08:14:31.125Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",
@@ -39,17 +39,17 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "d8a0f948cc46a0ba0d610df7458c4e8943bfe51a",
-        "treeSha": "ed9bcb74fd3c28d487bce24f1a93e1720c168775"
+        "commit": "c6d914f14884e4777d2a5093cf318ead6e967854",
+        "treeSha": "ad273fdb1caa1d17a39e1bc55dc4740c8dca9078"
       },
       "target": "plugins/sepia",
       "platforms": [
         "claude",
         "codex"
       ],
-      "version": "0.8.0",
-      "contentSha256": "sha256:1152fe63dac5e2ebf4c17f55fae17ee7870c5de5ec057ab23fefb3a534094cf2",
-      "syncedAt": "2026-09-06T08:01:22.069Z",
+      "version": "0.9.0",
+      "contentSha256": "sha256:2db5f3ecc007e563e3c6499e6cc4926436e70dbd9a2fe70df7da3d91fff3ff02",
+      "syncedAt": "2026-09-08T08:14:32.045Z",
       "riskFlags": [
         "contains executable helper scripts",
         "contains network command",
@@ -65,8 +65,8 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "e04ea0b9cc8248686edf5ac751cadff550e162b8",
-        "treeSha": "60a004be3290dbd0dffe54fae55437c21af35a1d"
+        "commit": "5064474d4d762dc9640234a41617cccb79185cec",
+        "treeSha": "9d448bb479cc1af55c488357556ac24d8cd932d2"
       },
       "target": "plugins/ecc",
       "platforms": [
@@ -74,8 +74,8 @@
         "codex"
       ],
       "version": "2.2.1",
-      "contentSha256": "sha256:eec49893274b59182efc35977477c1fdee3f74b1be3e4edbb9578b3475105e5b",
-      "syncedAt": "2026-09-07T09:22:57.888Z",
+      "contentSha256": "sha256:25c9f6f685406e27c67cfd0ddff501db03f064163214018b869bc1416015bf7f",
+      "syncedAt": "2026-09-08T08:14:30.283Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",
