@@ -38,7 +38,7 @@
     {
       "name": "sepia",
       "source": "./plugins/sepia",
-      "description": "De-AI writing package with the general Sepia router plus four separate operation entries: write, review, refactor, and recreate.",
+      "description": "De-AI writing package with the general Sepia router plus five separate operation entries: write, review, refactor, recreate, and hemingway.",
       "category": "writing",
       "version": "0.10.0",
       "homepage": "https://github.com/Nanako0129/sepia",
