@@ -1,6 +1,6 @@
 # Professional pass — shared layer for non-fiction
 
-Applies to every non-fiction domain (release notes, PR/issue replies, postmortems, tickets, technical articles, and anything else that isn't narrative). Evidence: the slop taxonomy (Shaib et al., S), expert AI-detector studies (Russell et al., R), genre-alignment findings (Reinhart et al., P), and the Wikipedia/humanizer corpus of documented tells (W). Stable source identities live in the repository research ledger; single-letter aliases in this file are file-local. Prescriptions are Sepia design inferences unless a cited source explicitly tested the intervention.
+Applies to every non-fiction domain (release notes, PR/issue replies, postmortems, tickets, technical articles, long-form journalism, and anything else that isn't invented narrative). Evidence: the slop taxonomy (Shaib et al., S), expert AI-detector studies (Russell et al., R), genre-alignment findings (Reinhart et al., P), and the Wikipedia/humanizer corpus of documented tells (W). Stable source identities live in the repository research ledger; single-letter aliases in this file are file-local. Prescriptions are Sepia design inferences unless a cited source explicitly tested the intervention.
 
 > In professional genres the goal is not "fool a detector" — it is that the text carries information, has a stance, and sounds like it came from the person whose name is on it. Conventional structure is *fine* here; slop is the filler inside the structure.
 
@@ -40,7 +40,7 @@ Weighting sets the order and depth of attention, not an exemption: a short reply
 
 For long-form (articles, postmortems), also run the outline test and QUD check in `discourse-pass.md` §1–3: extract first sentences per paragraph; a clean-summary outline and a briefing→justification→consequences→reflection question-sequence are both machine shapes.
 
-## Report format (review operation)
+## Report format (review; refactor stage 1 prints the same report before editing)
 
 ```text
 SEPIA REVIEW — <document type, venue>
@@ -50,6 +50,8 @@ Prose layer: author=<operative | prior | none> executor=<operative | prior | non
 Venue corpus: <artifacts sampled, or "none — using domain baseline">
 Style scan: <style-pass §2–3 and §5 rhythm hits with quoted evidence, or none>
 Failed: <#n check-name — quoted evidence>   (one line per failed check)
+Deferred: <#n check-name — quoted evidence — needs human | none>   (unattended runs only; omitted otherwise)
+Protected: <#n check-name — quoted evidence | none>   (only when ranges were declared, omitted otherwise; the passage is identified by its quoted words, never by a number the model derives — the caller already holds its own ranges)
 Passed: <check numbers only>
 Verdict: <clean / isolated hits / cluster> → <ship / refactor / recreate>
 ```

@@ -6,7 +6,7 @@
 
 > De-AI writing at the layer that actually gives AI away. Fiction gets its narrative architecture repaired before anyone touches word choice; professional documents (release notes, PR replies, postmortems, tickets, technical articles) each get rules matched to their venue.
 
-A portable [Agent Skill](https://agentskills.io/specification): any agent that speaks the standard can load it, and the [Skills CLI](https://skills.sh), which supports 77+ agents, installs it with one command. Claude Code, Codex, Grok Build, and Antigravity additionally get native plugin packaging. One canonical `SKILL.md`, no per-platform forks. Four operations: **write**, **review** (diagnose only), **refactor** (minimal edits), **recreate** (full rewrite).
+A portable [Agent Skill](https://agentskills.io/specification): any agent that speaks the standard can load it, and the [Skills CLI](https://skills.sh), which supports 77+ agents, installs it with one command. Claude Code, Codex, Grok Build, Antigravity, and QwenPaw additionally get native plugin packaging. One canonical `SKILL.md`, no per-platform forks. Four operations: **write**, **review** (diagnose only), **refactor** (minimal edits), **recreate** (full rewrite).
 
 ## Why another humanizer
 
@@ -31,12 +31,13 @@ Professional prose fails differently. The studies digested in [`research/`](rese
 | Postmortems | blameless toward people, merciless toward mechanisms; timestamps, dead ends, owned action items |
 | Tickets / work orders | title = outcome, testable acceptance criteria, link don't repeat |
 | Technical articles | open at the problem, one real dead end, one committed opinion, numbers with conditions |
+| Long-form journalism (features, investigations, data stories) | lead and body in two registers, quotations keep their spoken texture, every number carries a comparison, no summary ending |
 
 The governing principle throughout: **calibrate to the human distribution, don't invert the AI one.** Humans sit at moderate values; a story with every rule applied is a new fingerprint. The skill selects 3–5 moves per story and leaves slack.
 
 ## Operation entries
 
-The complete plugin package gives Claude Code, Codex, Grok Build, and Antigravity a general router plus five direct entries:
+The complete plugin package gives Claude Code, Codex, Grok Build, and Antigravity a general router plus five direct entries. QwenPaw gets the `/sepia` router only, so the table below does not apply there:
 
 | Operation | Claude Code | Codex | Grok Build | Antigravity | Meaning |
 |---|---|---|---|---|---|
@@ -46,7 +47,7 @@ The complete plugin package gives Claude Code, Codex, Grok Build, and Antigravit
 | recreate | `/sepia-recreate` | `$sepia-recreate` | `/sepia-recreate` | `/sepia-recreate` | Rewrite from the source facts and intent |
 | hemingway | `/sepia-hemingway` | `$sepia-hemingway` | `/sepia-hemingway` | `/sepia-hemingway` | Write or refactor fiction with the built-in Hemingway voice applied |
 
-The general `/sepia` (Claude Code, Grok Build, and Antigravity) or `$sepia` (Codex) router remains available. The operation wrappers depend on their sibling canonical skill, so standalone wrapper installation is unsupported; install the complete plugin package. What was verified on each platform is stated under Install.
+The general `/sepia` (Claude Code, Grok Build, Antigravity, and QwenPaw) or `$sepia` (Codex) router remains available; on QwenPaw the package installs the six skills into each workspace and registers no per-operation slash commands. The operation wrappers depend on their sibling canonical skill, so standalone wrapper installation is unsupported; install the complete plugin package. What was verified on each platform is stated under Install.
 
 ## Experimental: composing with voice skills
 
@@ -56,7 +57,7 @@ The contract in short: sepia's architecture decisions come first. The voice's mo
 
 ## Sentence rhythm and Chinese calibration
 
-The style pass checks the *spread* of sentence lengths, the one syntactic measure on which every study that measured it agrees (human text varies more within a passage, in English and in Chinese); mean sentence length, punctuation counts, and paragraph length are not treated as signals because the measured directions contradict each other. Chinese text loads `references/languages/zh.md`, a calibration built on the one measured Chinese corpus (HC3, 2023) with its limits stated in the file; evidence and numbers are in `research/rhythm-syntax.md`.
+The style pass checks the *spread* of sentence lengths, the one syntactic measure on which every study that measured it agrees (human text varies more within a passage, in English and in Chinese); mean sentence length, punctuation counts, and paragraph length are not treated as signals because the measured directions contradict each other. Chinese text loads `references/languages/zh.md`, a calibration built on the one human-vs-machine Chinese corpus (HC3, 2023) plus a private human-side measurement of Traditional Chinese journalism (about two thousand articles from one unnamed Taiwanese publication over about ten years; corpus not distributed), with the limits of both stated in the file; evidence and numbers are in `research/rhythm-syntax.md`, and the journalism digest is `research/zh-news-corpus.md`.
 
 ## Install
 
@@ -70,9 +71,9 @@ npx skills update sepia -g             # update
 npx skills remove sepia -g             # uninstall
 ```
 
-Installs on every agent the [Skills CLI](https://skills.sh) supports — Cursor, Cline, Windsurf, Copilot, OpenCode, goose, and more. Pick your agents when prompted. Runtime behavior outside the four platforms below has not been exercised by us; the skill is plain markdown under the Agent Skills standard, so file an issue if your agent trips on it.
+Installs on every agent the [Skills CLI](https://skills.sh) supports — Cursor, Cline, Windsurf, Copilot, OpenCode, goose, and more. Pick your agents when prompted. Runtime behavior outside the five platforms below has not been exercised by us; the skill is plain markdown under the Agent Skills standard, so file an issue if your agent trips on it.
 
-The four platforms below have native plugin installers, each exercised with a live install. Verified means the install completes and the sepia entries appear. Whether the entries then behave as documented has not been checked platform by platform.
+The five platforms below have native plugin installers, each exercised with a live install (QwenPaw's by its contributor, see that section). Verified means the install completes and the sepia entries appear. Whether the entries then behave as documented has not been checked platform by platform.
 
 ### Claude Code
 
@@ -119,6 +120,20 @@ Grok also auto-discovers a Claude Code install of sepia if you have one; either 
 agy plugin install https://github.com/Nanako0129/sepia
 ```
 
+### QwenPaw
+
+```bash
+# install: qwenpaw takes a local directory (or a zip URL), so clone first;
+# the package's skills symlink resolves inside the clone
+git clone https://github.com/Nanako0129/sepia
+qwenpaw plugin install ./sepia/.qwenpaw-plugin
+
+# uninstall
+qwenpaw plugin uninstall sepia
+```
+
+Contributor-verified on QwenPaw 2.2.1 (#250, not reproduced by the maintainer): the install completes and `/sepia` is routed, with the packaged `skills` symlink followed into a real tree by `shutil.copytree`.
+
 ### Project scope (alternative)
 
 When one repo should pin its own copy, commit `skills/sepia/` into that repo as `.agents/skills/sepia` (Codex + Antigravity) or `.claude/skills/sepia` (Claude Code).
@@ -139,6 +154,9 @@ grok plugin uninstall sepia
 
 # Antigravity
 agy plugin uninstall sepia
+
+# QwenPaw
+qwenpaw plugin uninstall sepia
 ```
 
 ## Layout
@@ -157,6 +175,7 @@ sepia/
 │   └── sepia-hemingway/SKILL.md  # fiction write/refactor with the built-in voice
 ├── .claude-plugin/          # Claude Code packaging (plugin.json, marketplace.json)
 ├── .codex-plugin/           # Codex packaging
+├── .qwenpaw-plugin/         # QwenPaw packaging (plugin.json, plugin.py, skills symlink)
 ├── .agents/                 # Codex/Antigravity workspace-mode discovery + Antigravity workflow
 └── research/                # digested evidence base with sources
 ```
@@ -173,7 +192,7 @@ sepia/
 
 ## Sources
 
-Full digests with links in [`research/`](research/). Primary: StoryScope ([arXiv:2604.03136](https://arxiv.org/abs/2604.03136)); LAMP ([CHI 2025](https://arxiv.org/abs/2409.14509)); Measuring AI Slop ([arXiv:2509.19163](https://arxiv.org/abs/2509.19163)); Reinhart et al. ([PNAS 2025](https://arxiv.org/abs/2410.16107)); Russell et al. ([ACL 2025](https://arxiv.org/abs/2501.15654)); NarraBench ([arXiv:2510.09869](https://arxiv.org/abs/2510.09869)); Echoes in AI ([PNAS 2025](https://arxiv.org/abs/2501.00273)); QUDsim ([COLM 2025](https://arxiv.org/abs/2504.09373)); Beguš ([2024](https://arxiv.org/abs/2310.12902)); Beyond Checkmate ([EMNLP 2025](https://arxiv.org/abs/2501.19301)); Nonaka & Perry ([2025](https://arxiv.org/abs/2510.18932)); Chakrabarty et al. ([2026](https://arxiv.org/abs/2510.13939)); Shan, Lee & Hao ([2026](https://arxiv.org/abs/2608.27855)); Rohrbacher et al. ([2026](https://arxiv.org/abs/2609.02482)).
+Full digests with links in [`research/`](research/). Primary: StoryScope ([arXiv:2604.03136](https://arxiv.org/abs/2604.03136)); LAMP ([CHI 2025](https://arxiv.org/abs/2409.14509)); Measuring AI Slop ([arXiv:2509.19163](https://arxiv.org/abs/2509.19163)); Reinhart et al. ([PNAS 2025](https://arxiv.org/abs/2410.16107)); Russell et al. ([ACL 2025](https://arxiv.org/abs/2501.15654)); NarraBench ([arXiv:2510.09869](https://arxiv.org/abs/2510.09869)); Echoes in AI ([PNAS 2025](https://arxiv.org/abs/2501.00273)); QUDsim ([COLM 2025](https://arxiv.org/abs/2504.09373)); Beguš ([2024](https://arxiv.org/abs/2310.12902)); Beyond Checkmate ([EMNLP 2025](https://arxiv.org/abs/2501.19301)); Nonaka & Perry ([2025](https://arxiv.org/abs/2510.18932)); Chakrabarty et al. ([2026](https://arxiv.org/abs/2510.13939)); Shan, Lee & Hao ([2026](https://arxiv.org/abs/2608.27855)); Rohrbacher et al. ([2026](https://arxiv.org/abs/2609.02482)); Sourati et al. ([2026](https://arxiv.org/abs/2502.11266)).
 
 ## Support
 

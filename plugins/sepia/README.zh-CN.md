@@ -6,7 +6,7 @@
 
 > 从真正让 AI 露馅的那一层下手去 AI 味。小说在调整措辞之前先修复叙事架构。专业文档（发布说明、PR 回复、复盘报告、工单、技术文章）各自匹配符合场景的规则。
 
-这是一套 [Agent Skill](https://agentskills.io/specification)。只要支持这个标准的 agent 都能直接加载，[Skills CLI](https://skills.sh) 支持 77+ 款 agent 且单条命令即可安装。Claude Code、Codex、Grok Build 和 Antigravity 额外提供了原生插件包。全平台共用一份标准 `SKILL.md`，不对各个平台建立独立分支。四种操作分别为 **write**、**review**（仅诊断）、**refactor**（最小改动）与 **recreate**（整篇重写）。
+这是一套 [Agent Skill](https://agentskills.io/specification)。只要支持这个标准的 agent 都能直接加载，[Skills CLI](https://skills.sh) 支持 77+ 款 agent 且单条命令即可安装。Claude Code、Codex、Grok Build、Antigravity 和 QwenPaw 额外提供了原生插件包。全平台共用一份标准 `SKILL.md`，不对各个平台建立独立分支。四种操作分别为 **write**、**review**（仅诊断）、**refactor**（最小改动）与 **recreate**（整篇重写）。
 
 ## 为什么还需要另一个 humanizer
 
@@ -31,12 +31,13 @@ sepia 将这些实测差距，连同 [`research/`](research/) 里梳理的相关
 | 事故复盘 | 不追究个人责任，深入分析机制；附时间戳、记录经历过的无效路径、每个行动项都有负责人 |
 | 工单 | 标题写结果、验收条件可测试、可通过链接引用，避免重复 |
 | 技术文章 | 从问题切入、记录一条真实经历过的无效路径、提出一个明确判断、数字附上适用条件 |
+| 长篇新闻（特稿、调查、数据报道） | 导语与正文采用两种语体、引语保留口语质感、每个数字都带比较基准、不写总结式结尾 |
 
 核心原则是**以人类分布为校准基准，不要直接反转 AI 分布。**人类写作的各项指标大多落在中段区间，把每条规则都用上的故事反而会形成一套新的特征指纹。这个 skill 针对每篇故事只挑选 3–5 种手法套用，给文本留出余地。
 
 ## 操作入口
 
-完整的插件包为 Claude Code、Codex、Grok Build 和 Antigravity 带来了一个通用路由以及五个直达入口。
+完整的插件包为 Claude Code、Codex、Grok Build 和 Antigravity 带来了一个通用路由以及五个直达入口；QwenPaw 只有 `/sepia` 这一个路由，下表不适用。
 
 | 操作 | Claude Code | Codex | Grok Build | Antigravity | 用途 |
 |---|---|---|---|---|---|
@@ -46,7 +47,7 @@ sepia 将这些实测差距，连同 [`research/`](research/) 里梳理的相关
 | recreate | `/sepia-recreate` | `$sepia-recreate` | `/sepia-recreate` | `/sepia-recreate` | 根据原始事实与意图重新撰写 |
 | hemingway | `/sepia-hemingway` | `$sepia-hemingway` | `/sepia-hemingway` | `/sepia-hemingway` | 应用内置海明威语气写作或改写小说 |
 
-通用的 `/sepia`（Claude Code、Grok Build 与 Antigravity）或 `$sepia`（Codex）路由依旧可用。各操作 wrapper 都依赖同级的规范 skill，不支持单独安装，请直接安装完整的插件包。各平台验证了什么，写在「安装」一节。
+通用的 `/sepia`（Claude Code、Grok Build、Antigravity 与 QwenPaw）或 `$sepia`（Codex）路由依旧可用；QwenPaw 的插件包会把六个 skill 装进每个 workspace，不另设各操作的斜杠命令。各操作 wrapper 都依赖同级的规范 skill，不支持单独安装，请直接安装完整的插件包。各平台验证了什么，写在「安装」一节。
 
 ## 实验性功能：叠加语气／风格 skill
 
@@ -56,7 +57,7 @@ sepia 将这些实测差距，连同 [`research/`](research/) 里梳理的相关
 
 ## 句长节奏与中文校准
 
-style pass 重点检查句长的*变化幅度*。这是量测过它的研究里唯一方向一致的句法指标（人类文本在同一段内变化更大，英文与中文皆然）；平均句长、标点数量、段落长度不当信号，因为各项量测的方向相互矛盾。中文文本会加载 `references/languages/zh.md`，这份校准基于目前唯一经过测量的中文语料库（HC3, 2023），相应局限已在文件内说明。具体证据与数据见 `research/rhythm-syntax.md`。
+style pass 重点检查句长的*变化幅度*。这是量测过它的研究里唯一方向一致的句法指标（人类文本在同一段内变化更大，英文与中文皆然）；平均句长、标点数量、段落长度不当信号，因为各项量测的方向相互矛盾。中文文本会加载 `references/languages/zh.md`，这份校准基于唯一一份人机对照的中文语料库（HC3, 2023），另加一份仅有人类侧的繁体中文新闻测量（一家未具名台湾出版方，约两千篇，跨约十年，语料未公开），两者的局限均已在文件内说明。具体证据与数据见 `research/rhythm-syntax.md`，新闻测量的摘要见 `research/zh-news-corpus.md`。
 
 ## 安装
 
@@ -70,9 +71,9 @@ npx skills update sepia -g             # update
 npx skills remove sepia -g             # uninstall
 ```
 
-只要是 [Skills CLI](https://skills.sh) 支持的 agent 都可以安装（Cursor、Cline、Windsurf、Copilot、OpenCode、goose 等）。安装过程中按提示选择你使用的 agent 即可。对于下方四款平台以外的运行时表现，我们尚未做过实机测试。本 skill 基于 Agent Skills 标准，属于纯 markdown 文件，如果你的 agent 跑起来遇到问题，欢迎提交 issue。
+只要是 [Skills CLI](https://skills.sh) 支持的 agent 都可以安装（Cursor、Cline、Windsurf、Copilot、OpenCode、goose 等）。安装过程中按提示选择你使用的 agent 即可。对于下方五款平台以外的运行时表现，我们尚未做过实机测试。本 skill 基于 Agent Skills 标准，属于纯 markdown 文件，如果你的 agent 跑起来遇到问题，欢迎提交 issue。
 
-下方四款平台都提供原生插件安装方式，每款都跑过实机安装。所谓验证，指安装流程能够顺利走完并出现 sepia 相关的入口命令。装好之后入口的行为没有逐平台实测。
+下方五款平台都提供原生插件安装方式，每款都跑过实机安装（QwenPaw 由贡献者安装，见该节）。所谓验证，指安装流程能够顺利走完并出现 sepia 相关的入口命令。装好之后入口的行为没有逐平台实测。
 
 ### Claude Code
 
@@ -119,6 +120,20 @@ grok plugin update
 agy plugin install https://github.com/Nanako0129/sepia
 ```
 
+### QwenPaw
+
+```bash
+# install：qwenpaw 只接受本地目录（或 zip URL），先 clone；
+# 插件包里的 skills 符号链接在 clone 内即可解析
+git clone https://github.com/Nanako0129/sepia
+qwenpaw plugin install ./sepia/.qwenpaw-plugin
+
+# uninstall
+qwenpaw plugin uninstall sepia
+```
+
+由贡献者在 QwenPaw 2.2.1 上实机验证（#250，维护者未自行复现）：安装能走完、`/sepia` 有路由，插件包里的 `skills` 符号链接会被 `shutil.copytree` 展开成真实目录。
+
 ### Project scope（替代方案）
 
 如果某个仓库需要锁定自己的独立副本，可将 `skills/sepia/` 提交到该仓库，路径设为 `.agents/skills/sepia`（Codex + Antigravity）或 `.claude/skills/sepia`（Claude Code）。
@@ -139,6 +154,9 @@ grok plugin uninstall sepia
 
 # Antigravity
 agy plugin uninstall sepia
+
+# QwenPaw
+qwenpaw plugin uninstall sepia
 ```
 
 ## 目录结构
@@ -157,6 +175,7 @@ sepia/
 │   └── sepia-hemingway/SKILL.md  # fiction write/refactor with the built-in voice
 ├── .claude-plugin/          # Claude Code packaging (plugin.json, marketplace.json)
 ├── .codex-plugin/           # Codex packaging
+├── .qwenpaw-plugin/         # QwenPaw packaging (plugin.json, plugin.py, skills symlink)
 ├── .agents/                 # Codex/Antigravity workspace-mode discovery + Antigravity workflow
 └── research/                # digested evidence base with sources
 ```
@@ -173,7 +192,7 @@ sepia/
 
 ## 参考资料
 
-完整摘要与链接见 [`research/`](research/)。主要来源：StoryScope ([arXiv:2604.03136](https://arxiv.org/abs/2604.03136)); LAMP ([CHI 2025](https://arxiv.org/abs/2409.14509)); Measuring AI Slop ([arXiv:2509.19163](https://arxiv.org/abs/2509.19163)); Reinhart et al. ([PNAS 2025](https://arxiv.org/abs/2410.16107)); Russell et al. ([ACL 2025](https://arxiv.org/abs/2501.15654)); NarraBench ([arXiv:2510.09869](https://arxiv.org/abs/2510.09869)); Echoes in AI ([PNAS 2025](https://arxiv.org/abs/2501.00273)); QUDsim ([COLM 2025](https://arxiv.org/abs/2504.09373)); Beguš ([2024](https://arxiv.org/abs/2310.12902)); Beyond Checkmate ([EMNLP 2025](https://arxiv.org/abs/2501.19301)); Nonaka & Perry ([2025](https://arxiv.org/abs/2510.18932)); Chakrabarty et al. ([2026](https://arxiv.org/abs/2510.13939)); Shan, Lee & Hao ([2026](https://arxiv.org/abs/2608.27855)); Rohrbacher et al. ([2026](https://arxiv.org/abs/2609.02482)).
+完整摘要与链接见 [`research/`](research/)。主要来源：StoryScope ([arXiv:2604.03136](https://arxiv.org/abs/2604.03136)); LAMP ([CHI 2025](https://arxiv.org/abs/2409.14509)); Measuring AI Slop ([arXiv:2509.19163](https://arxiv.org/abs/2509.19163)); Reinhart et al. ([PNAS 2025](https://arxiv.org/abs/2410.16107)); Russell et al. ([ACL 2025](https://arxiv.org/abs/2501.15654)); NarraBench ([arXiv:2510.09869](https://arxiv.org/abs/2510.09869)); Echoes in AI ([PNAS 2025](https://arxiv.org/abs/2501.00273)); QUDsim ([COLM 2025](https://arxiv.org/abs/2504.09373)); Beguš ([2024](https://arxiv.org/abs/2310.12902)); Beyond Checkmate ([EMNLP 2025](https://arxiv.org/abs/2501.19301)); Nonaka & Perry ([2025](https://arxiv.org/abs/2510.18932)); Chakrabarty et al. ([2026](https://arxiv.org/abs/2510.13939)); Shan, Lee & Hao ([2026](https://arxiv.org/abs/2608.27855)); Rohrbacher et al. ([2026](https://arxiv.org/abs/2609.02482)); Sourati et al. ([2026](https://arxiv.org/abs/2502.11266)).
 
 ## 赞助
 
