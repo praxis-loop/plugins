@@ -65,17 +65,17 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "07756cee15788a54506031462794ad645719b028",
-        "treeSha": "d85fd4e8a13d62480f041764dc65f4119c8d6ac0"
+        "commit": "934195f955cf0da847d59fcd6f68856bce112d8b",
+        "treeSha": "dd8398876b758f1917ffa201ed01de7580f75730"
       },
       "target": "plugins/ecc",
       "platforms": [
         "claude",
         "codex"
       ],
-      "version": "2.2.1",
-      "contentSha256": "sha256:130232ad97629e6691ca7e85d43795bb56f76f3d447bc9d16ab829ffec2b8fcb",
-      "syncedAt": "2026-09-19T08:11:33.841Z",
+      "version": "2.2.2",
+      "contentSha256": "sha256:601c1408333faef5fc7185246f8ba3821a04d04edfdb7c9eb57972e6f317a79f",
+      "syncedAt": "2026-09-20T08:44:15.333Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",

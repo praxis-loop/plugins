@@ -11,7 +11,7 @@
       "source": "./plugins/ecc",
       "description": "Harness-native ECC workflows for Codex: shared skills, production-ready MCP configs, and selective-install-aligned conventions for TDD, security scanning, code review, and autonomous development.",
       "category": "coding",
-      "version": "2.2.1",
+      "version": "2.2.2",
       "author": {
         "name": "Affaan Mustafa",
         "email": "me@affaanmustafa.com",
