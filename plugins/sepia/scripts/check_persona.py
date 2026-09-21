@@ -11,9 +11,10 @@ What it enforces, and why each rule exists (`voice-skills.md`, persona
 section):
 
 - Section order: the executor reads the body top to bottom, and the
-  prescriptive sections ("Every piece", the override table, "Prohibitions")
-  must come after the descriptive ones, or the persona is read as a
-  description and its moves are eaten by sepia's rules.
+  interface sections (the override table, "Prohibitions") must come after
+  the descriptive ones, or the persona is read as a description and its
+  voice is eaten by sepia's rules. The body describes a voice in prose;
+  this script checks the interface around it and never counts the prose.
 - Rule tokens: the override table names rules with a restricted grammar so
   the body and the review's `Persona cost:` line use the same identifiers, and
   so the non-yielding rules can be refused by identity rather than by guessing
@@ -28,8 +29,11 @@ section):
   restates the quoted-material guardrail. `languages/zh.md §2` must name a
   row, so the whole section cannot be listed around its uniformity row.
 - Fenced code blocks are ignored when reading sections, so sample text in
-  ``` cannot stand in for the override table, the Every piece list or the
-  Prohibitions list items.
+  ``` cannot stand in for the override table or the Prohibitions list items.
+- Consent: one of five contributable forms, or `private study, not for
+  distribution` for a profile held locally. `CONTRIBUTING.md` forbids that
+  last value in a contributed profile; the value exists so a private profile
+  does not have to misstate its consent to pass this check.
 - Fixed prohibition lines: defined once here (ASCII apostrophes) and quoted
   into the template and CONTRIBUTING; the comparison normalises curly quotes.
 - Quoted examples: no span inside 「」, 『』 or a paired double quote may exceed
@@ -54,19 +58,26 @@ from pathlib import Path
 SECTIONS = (
     "Status",
     "One sentence",
-    "Beat and themes",
-    "Metric fingerprint",
-    "Moves by frequency",
-    "Negatives",
-    "Meaning for sepia",
-    "Every piece",
-    "Only with facts",
-    "Sentence shape",
+    "Who she is to the reader",
+    "First move",
+    "Warmth and judgment",
+    "By situation",
+    "Texture",
+    "Structure habits",
+    "Endings",
+    "Speaking, not drafting",
+    "Never",
     "Rules this persona overrides",
     "Prohibitions",
     "Boundary",
+    "Exemplars",
     "Blind-test record",
 )
+# The one section a body may leave out: a third-party writer's text cannot be
+# shown, so a persona of a public-domain author or a studied writer has none.
+OPTIONAL_SECTIONS = {"Exemplars"}
+# An Exemplars section opens by saying where its pieces came from.
+EXEMPLAR_SOURCE_RE = re.compile(r"^Source: (captured|elicited) — \S.+$")
 
 STATUS_KEYS = ("Name", "Routes", "Opt-in phrase", "Provenance", "Consent", "Tested")
 ROUTES = {"professional", "fiction", "any"}
@@ -74,21 +85,23 @@ TESTED = {"tested", "untested"}
 # Consent takes one of these forms; the dated form needs an ISO date.
 CONSENT_RE = re.compile(
     r"(own style|public-domain author|fictional persona|brand persona|"
+    r"private study, not for distribution|"
     r"consent from the person, \d{4}-\d{2}-\d{2})"
 )
 # The whole Opt-in phrase field: the English form, optionally followed by the
-# Chinese form for the same name. Nothing else is an affirmative opt-in.
-OPTIN_RE = re.compile(r"apply persona ([^/「」]+?)(?: / 「套用 persona \1」)?")
+# Chinese form for the same name. Nothing else is an affirmative opt-in. The
+# two names are captured separately rather than matched with a backreference,
+# because a backreference is case-sensitive and the phrase is not: the halves
+# are compared below with the same caseless test the Name check uses.
+OPTIN_RE = re.compile(r"apply persona ([^/「」]+?)(?: / 「套用 persona ([^「」]+)」)?")
 # One blind-test entry per line: date — judge — compared — outcome.
 RECORD_RE = re.compile(r"^\s*(?:[-*]\s+)?(\d{4}-\d{2}-\d{2}) — judge: \S.* — compared: \S.* — outcome: \S.*$", re.M)
-MOVE_RE = re.compile(r"^\s*\d+\.\s+(\S.*?)\s*\(overrides: ([^)]+)\)\s*$")
 ISO_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 STATUS_LINE_RE = re.compile(r"^([A-Za-z -]+):\s*(.*)$")
-MIN_MOVES, MAX_MOVES = 3, 8
 TABLE_HEADER = ("Rule", "How the persona departs", "Expected cost")
 # Sections whose quoted text is metadata (a source title, a compared passage),
 # not example phrases; the 20-character rule does not apply there.
-QUOTE_SCAN_EXEMPT = {"Status", "Blind-test record"}
+QUOTE_SCAN_EXEMPT = {"Status", "Blind-test record", "Exemplars"}
 
 PROHIBITION_LINES = (
     "Do not reuse this file's example phrases verbatim; they are shapes, not a word list.",
@@ -264,6 +277,11 @@ def table_rows(body: str) -> tuple[list[list[str]], str | None]:
             # pipe leaves an empty cell and fails the width checks below
             inner = s[1:-1] if s.endswith("|") else s[1:]
             pipe_rows.append([c.strip() for c in inner.split("|")])
+        elif "|" in s:
+            # A row written without its leading pipe is still a row to a Markdown
+            # renderer, and it used to be invisible here, so a forbidden token
+            # could sit in it unchecked. Refuse it rather than guess its cells.
+            return [], f"override table row must start with '|': {s[:60]}"
     if not pipe_rows:
         return [], "override table has no rows"
     if tuple(pipe_rows[0]) != TABLE_HEADER:
@@ -298,7 +316,7 @@ def check_file(path: Path, root: Path) -> list[str]:
 
     Returns one ``<path>: ERROR|WARN: <message>`` line per finding, in the
     order the contract is read: section sequence, Status block, override
-    table, Every piece moves, Prohibitions, quoted examples. ``root`` is the
+    table, Prohibitions, quoted examples. ``root`` is the
     repository whose ``skills/sepia/references/`` the rule tokens resolve
     against.
     """
@@ -308,7 +326,7 @@ def check_file(path: Path, root: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
 
     order, bodies = split_sections(text)
-    missing = [s for s in SECTIONS if s not in order]
+    missing = [s for s in SECTIONS if s not in order and s not in OPTIONAL_SECTIONS]
     unexpected = [s for s in order if s not in SECTIONS]
     dups = sorted({s for s in order if order.count(s) > 1})
     for s in missing:
@@ -317,8 +335,13 @@ def check_file(path: Path, root: Path) -> list[str]:
         err(f"unexpected section '## {s}' (the template's H2 sequence is fixed)")
     for s in dups:
         err(f"duplicate section '## {s}'")
-    if not (missing or unexpected or dups) and tuple(order) != SECTIONS:
+    expected = tuple(s for s in SECTIONS if s in order)
+    if not (missing or unexpected or dups) and tuple(order) != expected:
         err("sections are not in template order")
+    if "Exemplars" in bodies:
+        first = next((l.strip() for l in bodies["Exemplars"].splitlines() if l.strip()), "")
+        if not EXEMPLAR_SOURCE_RE.match(first):
+            err("Exemplars must open with 'Source: captured — …' or 'Source: elicited — …'")
 
     status = bodies.get("Status", "")
     for l in status.splitlines():
@@ -344,7 +367,8 @@ def check_file(path: Path, root: Path) -> list[str]:
         cm = CONSENT_RE.fullmatch(normalise(values["Consent"]))
         if not cm:
             err("Consent must be one of: own style | public-domain author | fictional persona | "
-                "brand persona | consent from the person, YYYY-MM-DD")
+                "brand persona | private study, not for distribution | "
+                "consent from the person, YYYY-MM-DD")
         elif cm.group(1).startswith("consent from the person"):
             try:
                 datetime.date.fromisoformat(cm.group(1)[-10:])
@@ -354,10 +378,19 @@ def check_file(path: Path, root: Path) -> list[str]:
         m = OPTIN_RE.fullmatch(values["Opt-in phrase"])
         if not m:
             err("Opt-in phrase must be exactly 'apply persona <name>' optionally followed by ' / 「套用 persona <name>」'")
-        elif "Name" in values and m.group(1) != values["Name"]:
+        elif m.group(2) is not None and m.group(2).casefold() != m.group(1).casefold():
+            err(f"Opt-in phrase names '{m.group(1)}' in the English form but '{m.group(2)}' in the Chinese form")
+        elif "Name" in values and m.group(1).casefold() != values["Name"].casefold():
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
+    record_lines = [l for l in bodies.get("Blind-test record", "").splitlines() if l.strip()]
+    if values.get("Tested") == "untested":
+        # An untested profile says so in one fixed phrase. Anything else here is a
+        # record that has not been through a person, and it does not get to sit
+        # under "untested" looking like one.
+        if [l.strip() for l in record_lines] != ["none yet"]:
+            err("Tested: untested requires the Blind-test record to be exactly 'none yet'")
     if values.get("Tested") == "tested":
-        lines = [l for l in bodies.get("Blind-test record", "").splitlines() if l.strip()]
+        lines = record_lines
         if not lines:
             err("Tested: tested requires at least one Blind-test record line of the form "
                 "'YYYY-MM-DD — judge: … — compared: … — outcome: …'")
@@ -393,24 +426,6 @@ def check_file(path: Path, root: Path) -> list[str]:
         else:
             declared.add(token)
 
-    # Every piece: 3–8 numbered moves, each ending in "(overrides: <token>)" or
-    # "(overrides: none)", and a named token must be in the table above.
-    moves = [l for l in bodies.get("Every piece", "").splitlines() if re.match(r"^\s*\d+\.\s", l)]
-    if not MIN_MOVES <= len(moves) <= MAX_MOVES:
-        err(f"Every piece must list {MIN_MOVES}–{MAX_MOVES} numbered moves, found {len(moves)}")
-    for l in moves:
-        m = MOVE_RE.match(l)
-        if not m:
-            err(f"Every piece move needs move text and a trailing '(overrides: <rule token>|none)': {l.strip()[:60]}")
-            continue
-        ref = m.group(2).strip().strip("`")
-        if ref == "none":
-            continue
-        token, terr = parse_token(ref, root)
-        if terr:
-            err(f"Every piece move overrides an unrecognised token: {ref}")
-        elif token not in declared:
-            err(f"Every piece move overrides {token}, which is not in the override table")
     if len(rows) > MAX_OVERRIDES_BEFORE_WARN:
         warn(f"{len(rows)} override rows; more than {MAX_OVERRIDES_BEFORE_WARN} reads as a house style")
 

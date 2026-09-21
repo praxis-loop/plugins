@@ -39,17 +39,17 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "ba08a915b5a502f5fa63b0edb85b83872bdaf9b0",
-        "treeSha": "797615bae0f431525c050584d79b203e33f9d016"
+        "commit": "1b223f1651149c97f1864242669f902356af6d21",
+        "treeSha": "9d36e16fe055e513443905c5ecec2257bc3372c4"
       },
       "target": "plugins/sepia",
       "platforms": [
         "claude",
         "codex"
       ],
-      "version": "0.11.0",
-      "contentSha256": "sha256:49d44574181f18cd3b4bf0332e79f0e352ca75ac9c9730c6805ff2a628e94c49",
-      "syncedAt": "2026-09-19T08:11:35.693Z",
+      "version": "0.12.0",
+      "contentSha256": "sha256:690178b1299e6e527d83f93586030847db54744bcf3a4219370c198c055c3ba5",
+      "syncedAt": "2026-09-21T09:10:46.532Z",
       "riskFlags": [
         "contains executable helper scripts",
         "contains network command",
@@ -65,8 +65,8 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "934195f955cf0da847d59fcd6f68856bce112d8b",
-        "treeSha": "dd8398876b758f1917ffa201ed01de7580f75730"
+        "commit": "2b6e839771e53096d8451a213d40dc64ec8acac0",
+        "treeSha": "789ca87b2ee300afefe1bd5343f93e42b62a90f2"
       },
       "target": "plugins/ecc",
       "platforms": [
@@ -74,8 +74,8 @@
         "codex"
       ],
       "version": "2.2.2",
-      "contentSha256": "sha256:601c1408333faef5fc7185246f8ba3821a04d04edfdb7c9eb57972e6f317a79f",
-      "syncedAt": "2026-09-20T08:44:15.333Z",
+      "contentSha256": "sha256:7ef09688864477eb63da7e13b2c51e6a0f2d122e9cdcf32d03dc5649481495ec",
+      "syncedAt": "2026-09-21T09:10:44.774Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",
