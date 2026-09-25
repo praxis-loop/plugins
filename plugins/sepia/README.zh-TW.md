@@ -42,7 +42,7 @@ sepia 把這些實測差距，連同 [`research/`](research/) 裡整理過的相
 |---|---|---|
 | Claude | 已量測 | Claude Fable 5.1 與 Mythos 5.1、Fable 5 與 Mythos 5、Opus 5、Opus 4.8 |
 | GPT | 已量測 | GPT-5.6、GPT-6 Astra |
-| Gemini | 已量測 | Gemini 3 系列 |
+| Gemini | 已量測 | Gemini 3 與 3.1 |
 | DeepSeek | 已量測 | 已查閱（未發布指南） |
 | Kimi | 已量測 | 已查閱（未發布指南） |
 

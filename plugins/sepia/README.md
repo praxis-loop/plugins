@@ -42,7 +42,7 @@ A 30-feature diagnosis rubric and per-model fingerprints across two layers apply
 |---|---|---|
 | Claude | Measured | Claude Fable 5.1 and Mythos 5.1, Fable 5 and Mythos 5, Opus 5, Opus 4.8 |
 | GPT | Measured | GPT-5.6, GPT-6 Astra |
-| Gemini | Measured | Gemini 3 series |
+| Gemini | Measured | Gemini 3 and 3.1 |
 | DeepSeek | Measured | Consulted (no guidance published) |
 | Kimi | Measured | Consulted (no guidance published) |
 
