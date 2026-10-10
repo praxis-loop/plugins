@@ -26,7 +26,7 @@
       "source": "./plugins/ponytail",
       "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
       "category": "productivity",
-      "version": "4.10.0",
+      "version": "5.1.0",
       "author": {
         "name": "Dietrich Gebert",
         "url": "https://github.com/DietrichGebert"
@@ -40,7 +40,7 @@
       "source": "./plugins/sepia",
       "description": "De-AI writing package with the general Sepia router plus five separate operation entries: write, review, refactor, recreate, and hemingway.",
       "category": "writing",
-      "version": "0.12.2",
+      "version": "0.12.3",
       "homepage": "https://github.com/Nanako0129/sepia",
       "repository": "https://github.com/Nanako0129/sepia",
       "license": "MIT"
