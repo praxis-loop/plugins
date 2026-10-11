@@ -85,6 +85,32 @@
         "contains sudo command",
         "mentions secret-bearing paths or values"
       ]
+    },
+    "impeccable": {
+      "sourceType": "github",
+      "repository": "pbakaus/impeccable",
+      "path": "plugin",
+      "requested": {
+        "type": "branch",
+        "value": "main"
+      },
+      "resolved": {
+        "commit": "d631a8827f99414d2b6daba4ef08b7f8701751d7",
+        "treeSha": "63e2799a30d982128362d724c0f020cd62bfe86c"
+      },
+      "target": "plugins/impeccable",
+      "platforms": [
+        "claude"
+      ],
+      "version": "4.5.2",
+      "contentSha256": "sha256:9ed16e68000337e5e8b152c475f9495229367aa273bc1fed237d8c5eb1bd7233",
+      "syncedAt": "2026-10-11T07:47:35.018Z",
+      "riskFlags": [
+        "contains executable helper scripts",
+        "contains lifecycle hooks",
+        "contains network command",
+        "mentions secret-bearing paths or values"
+      ]
     }
   }
 }

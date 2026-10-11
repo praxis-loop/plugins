@@ -22,6 +22,19 @@
       "license": "MIT"
     },
     {
+      "name": "impeccable",
+      "source": "./plugins/impeccable",
+      "description": "Design fluency for frontend development. 1 skill with 24 commands (/impeccable polish, /impeccable audit, /impeccable critique, etc.) and curated anti-pattern detection.",
+      "category": "design",
+      "version": "4.5.2",
+      "author": {
+        "name": "Paul Bakaus",
+        "email": "paul@paulbakaus.com"
+      },
+      "homepage": "https://impeccable.style",
+      "repository": "https://github.com/pbakaus/impeccable"
+    },
+    {
       "name": "ponytail",
       "source": "./plugins/ponytail",
       "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",

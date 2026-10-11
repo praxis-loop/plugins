@@ -10,8 +10,9 @@
 | Ponytail | `DietrichGebert/ponytail` | ✓ | ✓ | 把 AI 编程会话整理为可复用的轨迹、记忆和洞察 |
 | Sepia | `Nanako0129/sepia` | ✓ | ✓ | 去 AI 味写作：router 加 write / review / refactor / recreate 四个操作入口 |
 | ECC | `affaan-m/ECC` | ✓ | ✓ | agent harness 优化系统：agents、skills、命令、hooks、规则与 MCP 约定 |
+| Impeccable | `pbakaus/impeccable` | ✓ |  | 前端 UI 设计：1 个 skill 带 24 个子命令（shape / critique / audit / polish 等）、4 个子 agent（终审、写 DESIGN.md、出素材、live 改稿回写），以及改 UI 文件后自动跑设计检测的 hook；首次运行会下载 Rust 引擎二进制 |
 
-三者都是第三方插件；`plugins/<name>/` 是由 `pluginctl` 从上游生成的快照，
+四者都是第三方插件；`plugins/<name>/` 是由 `pluginctl` 从上游生成的快照，
 不要直接编辑。
 
 ## 目录约定
@@ -51,6 +52,7 @@ claude plugin marketplace add /absolute/path/to/praxis-plugins
 claude plugin install ponytail@praxis-plugins
 claude plugin install sepia@praxis-plugins
 claude plugin install ecc@praxis-plugins
+claude plugin install impeccable@praxis-plugins
 
 # Codex
 codex plugin marketplace add /absolute/path/to/praxis-plugins
