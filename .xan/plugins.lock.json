@@ -64,8 +64,8 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "4eb71d92a39cab44ad40ac9d8a6a5ccb4029d6c2",
-        "treeSha": "22e434c4134af0ad682da9676f12e16765c1f663"
+        "commit": "2d515e4fc2ddef97354769812cf3f7b9ec4e5124",
+        "treeSha": "8638d50469b8e6b0b302d7e4b863c5c53bf85386"
       },
       "target": "plugins/ecc",
       "platforms": [
@@ -73,8 +73,8 @@
         "codex"
       ],
       "version": "2.2.3",
-      "contentSha256": "sha256:07d6a1c693dcb3a8fc0b5135baa4a04a48a5967e7219c7ee186b7257a273b2ba",
-      "syncedAt": "2026-10-10T10:02:05.845Z",
+      "contentSha256": "sha256:911d950aedcc59908c335c20114ed94271510fe329152a57417b9b0cc31bf25c",
+      "syncedAt": "2026-10-11T10:12:23.501Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",
@@ -95,7 +95,7 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "d631a8827f99414d2b6daba4ef08b7f8701751d7",
+        "commit": "c63b8dd7dd5a5f3c32eaabe1af76d0694f863ed2",
         "treeSha": "63e2799a30d982128362d724c0f020cd62bfe86c"
       },
       "target": "plugins/impeccable",
@@ -104,7 +104,7 @@
       ],
       "version": "4.5.2",
       "contentSha256": "sha256:9ed16e68000337e5e8b152c475f9495229367aa273bc1fed237d8c5eb1bd7233",
-      "syncedAt": "2026-10-11T07:47:35.018Z",
+      "syncedAt": "2026-10-11T10:12:25.874Z",
       "riskFlags": [
         "contains executable helper scripts",
         "contains lifecycle hooks",
