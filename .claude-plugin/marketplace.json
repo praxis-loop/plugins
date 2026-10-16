@@ -26,7 +26,7 @@
       "source": "./plugins/impeccable",
       "description": "Design fluency for frontend development. 1 skill with 24 commands (/impeccable polish, /impeccable audit, /impeccable critique, etc.) and curated anti-pattern detection.",
       "category": "design",
-      "version": "4.5.2",
+      "version": "4.6.0",
       "author": {
         "name": "Paul Bakaus",
         "email": "paul@paulbakaus.com"
@@ -39,7 +39,7 @@
       "source": "./plugins/ponytail",
       "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
       "category": "productivity",
-      "version": "5.1.0",
+      "version": "5.3.0",
       "author": {
         "name": "Dietrich Gebert",
         "url": "https://github.com/DietrichGebert"
@@ -53,7 +53,7 @@
       "source": "./plugins/sepia",
       "description": "De-AI writing package with the general Sepia router plus five separate operation entries: write, review, refactor, recreate, and hemingway.",
       "category": "writing",
-      "version": "0.12.3",
+      "version": "0.12.4",
       "homepage": "https://github.com/Nanako0129/sepia",
       "repository": "https://github.com/Nanako0129/sepia",
       "license": "MIT"
