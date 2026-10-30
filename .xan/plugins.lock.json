@@ -10,17 +10,17 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "09c434ab73ca43761c5d8b0c5d341926c2fba710",
-        "treeSha": "d9b8df03066ea55bb9dea5df3a39000e42478847"
+        "commit": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846",
+        "treeSha": "6bdee088de8ae2cfa05468b30291baa6f5faa62c"
       },
       "target": "plugins/ponytail",
       "platforms": [
         "claude",
         "codex"
       ],
-      "version": "5.3.2",
-      "contentSha256": "sha256:cd35ea311fd32ba4a3a63e59776d94088cfc408e9b014ae5356d044700e97a3b",
-      "syncedAt": "2026-10-20T08:45:15.955Z",
+      "version": "5.3.3",
+      "contentSha256": "sha256:156a55068d3c30be531388d41f4b19fe36fbe6716250c9c9cce278c96a3af6c2",
+      "syncedAt": "2026-10-30T10:18:31.945Z",
       "riskFlags": [
         "contains destructive delete command",
         "contains executable helper scripts",
@@ -64,8 +64,8 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b",
-        "treeSha": "794b1fe2343e67aab32e751ded09abf1a4d06dd0"
+        "commit": "b38be6a7f6350964d59328b52f0624e1d1d552d1",
+        "treeSha": "a3358aa98b4484b71424410dcfbdd2a9d03d3211"
       },
       "target": "plugins/ecc",
       "platforms": [
@@ -73,8 +73,8 @@
         "codex"
       ],
       "version": "2.2.3",
-      "contentSha256": "sha256:c651f5aeb81e8dcec7066d452c5cdfebb63b1e51fad37021bec3ed9031ec27b0",
-      "syncedAt": "2026-10-26T09:13:04.307Z",
+      "contentSha256": "sha256:67220f9634b300ef19b70c6b7b22015833160f0a441bb9990004d8f90f2928d9",
+      "syncedAt": "2026-10-30T10:18:29.348Z",
       "riskFlags": [
         "contains MCP components",
         "contains destructive delete command",
@@ -95,16 +95,16 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "3671d50f0ac9a662ce0615e85a256110c9cd720b",
-        "treeSha": "79c459cd63a2fb9b4a301c463f8c7e10c9eb4120"
+        "commit": "df3a4abe7d0840d5f60324812c432e00b66a4e75",
+        "treeSha": "786086ebc5b251c036c64a3cd487a36f6ce02a07"
       },
       "target": "plugins/impeccable",
       "platforms": [
         "claude"
       ],
-      "version": "4.7.1",
-      "contentSha256": "sha256:00789509d74069ff3a8c2fe427d6249b241bd774b0aeee00e5ee0951d6f74827",
-      "syncedAt": "2026-10-26T09:13:05.987Z",
+      "version": "4.8.0",
+      "contentSha256": "sha256:907844d3c4fc66b4cbdffb1e15b1ca6a04db6bb389ccc47f77bba2e6acec6ea6",
+      "syncedAt": "2026-10-30T10:18:31.271Z",
       "riskFlags": [
         "contains executable helper scripts",
         "contains lifecycle hooks",

@@ -26,7 +26,7 @@
       "source": "./plugins/impeccable",
       "description": "Design fluency for frontend development. 1 skill with 24 commands (/impeccable polish, /impeccable audit, /impeccable critique, etc.) and curated anti-pattern detection.",
       "category": "design",
-      "version": "4.7.1",
+      "version": "4.8.0",
       "author": {
         "name": "Paul Bakaus",
         "email": "paul@paulbakaus.com"
@@ -39,7 +39,7 @@
       "source": "./plugins/ponytail",
       "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
       "category": "productivity",
-      "version": "5.3.2",
+      "version": "5.3.3",
       "author": {
         "name": "Dietrich Gebert",
         "url": "https://github.com/DietrichGebert"
